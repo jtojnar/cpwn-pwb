@@ -29,7 +29,12 @@ def edit(editor, content=''):
 	assert not os.path.exists(f.name)
 	return (status, text)
 
+######################## CONFIG ##############################
 pages = ["The Starlight", "Springtime Sass", "The Shock Top", "Pixelhopper Shirt", "The Huntress", "The Graceful", "The Fiery Flair", "The Silver Sweep", "Mint Beach Dress", "The Gretel", "Coral Beach Dress", "The Do-Re-Mi", "The Wistful", "The Firecracker", "The Riot", "The Flame", "Rap Battler", "Lime Lyricist", "White Pixel Puffle Tee", "Green Pixel Puffle Tee", "Purple Pixel Puffle Tee", "Pink Pixel Puffle Tee", "Gold Pixel Puffle Tee", "Red Pixel Puffle Tee", "Black Pixel Puffle Tee", "Yellow Pixel Puffle Tee", "Brown Pixel Puffle Tee", "Orange Pixel Puffle Tee", "The Country Gal", "Green Slouch Purse", "Golden Bangles", "Bangles", "Redhead Headphones", "The Sunny Side", "Brown Flip Flops", "Grey B-Boy Sneakers", "The Bob 3000", "The Spike 3000", "Puffle Wrangler Hat", "Galactic Space Suit", "Puffle Wrangler Outfit", "Cowboy Boots", "Ring Master Hat", "Ring Master Outfit", "Popcorn (item)", "Untied Sneakers", "The Ringlets", "Beach Dress", "Pink and White Sandals", "Caramel Apple Costume", "Green MP3000", "The Aquamarine", "Tropical Mermaid Costume", "Swashbuckler's Hat", "High Seas Coat", "High Seas Boots", "Treasure Maps", "Telescope", "Green Dance Sweats", "Striped Pirate Bandanna", "Swashbuckler's Coat", "Raggedy Rags", "The Black Widow", "Black Widow Bodysuit", "The Hawkeye", "Hawkeye-wear", "Hawkeye Bodysuit", "Hawkeye Quiver & Bow", "Thor Helmet", "Thor Armor", "Mjolnir", "Captain America Cowl", "Captain America Bodysuit", "Captain America Shield", "THE HULK SMASH", "HULK BODYSUIT", "Nick Fury Eyepatch", "Nick Fury Coat", "Mark 42 Helmet", "Mark 42 Armor", "War Machine Helmet", "War Machine Armor"]
+EDITOR = 'subl -w'
+
+#############################################################
+
 
 site = pywikibot.Site('en', 'clubpenguinwiki')
 
@@ -70,7 +75,7 @@ for pageName in pages:
 
 			choice = input('Apply [yeN]:').lower()
 			if choice == 'e':
-				status, text = edit('subl -w', text)
+				status, text = edit(EDITOR, text)
 				print('Updated text; status=', status)
 			elif choice == 'y':
 				page.text = text
