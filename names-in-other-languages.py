@@ -119,15 +119,22 @@ for page in pages:
 			print('\n'.join(diff))
 
 			print(Fore.YELLOW, end='')
+			dirty = False
 			for l in langs:
 				translated = re.search(r'\|' + fullLangs[l] + ' ?= ?([^\n|]+)', page.text)
 				if not translated:
 					print(Fore.BLUE + l, Fore.YELLOW)
 				elif translated.group(1).strip() != cur[l][itemId] and cur[l][itemId] != '{{Untranslated}}':
 					print(l, end=' ')
+					dirty = True
 			print(Style.RESET_ALL)
 
-			choice = input('Apply [yeN]:').lower()
+			if dirty:
+				choice = 'n'
+			else:
+				choice = 'y'
+
+			# choice = input('Apply [yeN]:').lower()
 			if choice == 'e' or choice == '*':
 				status, text = edit(EDITOR, text)
 				print('Updated text; status=', status)
