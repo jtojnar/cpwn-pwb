@@ -38,3 +38,6 @@ def getDataFile(lang, fileName):
 		with open(fname, 'w') as f:
 			f.write(items_file)
 		return json.loads(items_file)
+
+langs = ['pt', 'fr', 'es', 'de', 'ru']
+fullLangs = {'pt': 'portuguese', 'fr': 'french', 'es': 'spanish', 'de': 'german', 'ru': 'russian'}

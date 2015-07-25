@@ -35,20 +35,20 @@ def getGoodName(i):
 
 def getItemLabels(fileName, idKey):
 	ret = {}
-	for l in ['pt', 'fr', 'es', 'de', 'ru']:
+	for l in langs:
 		ret[l] = {int(i[idKey]): getGoodLabel(i) for i in getDataFile(l, fileName)}
 	return ret
 
 
 def getIglooLabels(fileName):
 	ret = {}
-	for l in ['pt', 'fr', 'es', 'de', 'ru']:
+	for l in langs:
 		ret[l] = {int(k): getGoodName(i) for k, i in getDataFile(l, fileName).items()}
 	return ret
 
 def getStampLabels(fileName, idKey):
 	ret = {}
-	for l in ['pt', 'fr', 'es', 'de', 'ru']:
+	for l in langs:
 		stamps = sum([i['stamps'] for i in getDataFile(l, fileName)], [])
 		ret[l] = {int(s[idKey]): getGoodName(s) for s in stamps}
 	return ret
@@ -117,6 +117,15 @@ for page in pages:
 			diff = d.compare(page.text.splitlines(), text.splitlines())
 			diff = map(colorizeDiff, diff)
 			print('\n'.join(diff))
+
+			print(Fore.YELLOW, end='')
+			for l in langs:
+				translated = re.search(r'\|' + fullLangs[l] + ' ?= ?([^\n|]+)', page.text)
+				if not translated:
+					print(Fore.BLUE + l, Fore.YELLOW)
+				elif translated.group(1).strip() != cur[l][itemId] and cur[l][itemId] != '{{Untranslated}}':
+					print(l, end=' ')
+			print(Style.RESET_ALL)
 
 			choice = input('Apply [yeN]:').lower()
 			if choice == 'e' or choice == '*':
