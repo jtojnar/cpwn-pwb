@@ -27,6 +27,12 @@ def getGoodLabel(i):
 	else:
 		return '{{Untranslated}}'
 
+def getGoodName(i):
+	if i['name'].find('##') == -1 and i['name'].strip() != '':
+		return i['name'].strip()
+	else:
+		return '{{Untranslated}}'
+
 def getItemLabels(fileName, idKey):
 	ret = {}
 	for l in ['pt', 'fr', 'es', 'de', 'ru']:
@@ -37,14 +43,14 @@ def getItemLabels(fileName, idKey):
 def getIglooLabels(fileName):
 	ret = {}
 	for l in ['pt', 'fr', 'es', 'de', 'ru']:
-		ret[l] = {int(k): i['name'] for k, i in getDataFile(l, fileName).items()}
+		ret[l] = {int(k): getGoodName(i) for k, i in getDataFile(l, fileName).items()}
 	return ret
 
 def getStampLabels(fileName, idKey):
 	ret = {}
 	for l in ['pt', 'fr', 'es', 'de', 'ru']:
 		stamps = sum([i['stamps'] for i in getDataFile(l, fileName)], [])
-		ret[l] = {int(s[idKey]): s['name'] for s in stamps}
+		ret[l] = {int(s[idKey]): getGoodName(s) for s in stamps}
 	return ret
 
 
