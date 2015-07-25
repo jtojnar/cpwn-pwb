@@ -5,7 +5,7 @@ import re
 import difflib
 from common import *
 from colorama import Fore, Back, Style
-
+import traceback
 
 
 ######################## CONFIG ##############################
@@ -20,7 +20,7 @@ pages = cat.articlesList()
 def getGoodLabel(i):
 	if 'prompt' in i and i['prompt'].find('##') == -1 and i['prompt'].strip() != '':
 		if 'label' in i and i['label'].find('##') == -1 and i['label'].strip() != '' and i['prompt'] != i['label']:
-			print(Fore.MAGENTA, 'Imparity:', i['prompt'].strip(), '≠', i['label'].strip(), Style.RESET_ALL)
+			print(Fore.MAGENTA + 'Imparity:', i['prompt'].strip(), '≠', i['label'].strip(), Style.RESET_ALL)
 		return i['prompt'].strip()
 	elif 'label' in i and i['label'].find('##') == -1 and i['label'].strip() != '':
 		return i['label'].strip()
@@ -87,14 +87,18 @@ for page in pages:
 		print('Category invalid', page.full_url())
 		continue
 
-	itemId = int(re.search(r'\|' + ('stamp' if cur == stamps else '') + 'id ?= ?(\d+)', text).group(1))
-	text = re.sub(r'\{\{OtherLanguage(?!\}\}).+?\}\}', r'''{{OtherLanguage
+	try:
+		itemId = int(re.search(r'\|' + ('stamp' if cur == stamps else '') + 'id ?= ?(\d+)', text).group(1))
+		text = re.sub(r'\{\{OtherLanguage(?!\}\}).+?\}\}', r'''{{OtherLanguage
 |portuguese = ''' + cur['pt'][itemId] + '''
 |french = ''' + cur['fr'][itemId] + '''
 |spanish = ''' + cur['es'][itemId] + '''
 |german = ''' + cur['de'][itemId] + '''
 |russian = ''' + cur['ru'][itemId] + '''
 }}''', text, flags=re.M | re.S)
+	except Exception as e:
+		print(Back.RED + Fore.WHITE + traceback.format_exc() + Style.RESET_ALL)
+		continue
 
 
 	if text.find('REDIRECT') == -1:
